@@ -1,13 +1,14 @@
 #radion
 
-Angular app framework
+Angular application framework
 
 
 #Install
 
 
-
-
+```sh
+npm install --save-dev radion
+```
 
 
 #Author
