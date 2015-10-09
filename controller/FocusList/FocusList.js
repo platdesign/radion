@@ -1,13 +1,19 @@
 'use strict';
 
-var List = require('../List/List');
 
-module.exports = FocusList;
+var extend = require('radion/core/extendClass');
+var List = require('radion/controller/List/List');
+
+
+
+
+module.exports = extend(FocusList, List);
+
+
 
 
 function FocusList() {
-	List.apply(this, arguments);
-	this.__super = List.prototype;
+
 }
 
 
@@ -56,3 +62,4 @@ proto.removeItem = function(item) {
 
 	return this;
 };
+
