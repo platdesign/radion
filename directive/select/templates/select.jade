@@ -1,0 +1,4 @@
+.r-select(r-click-outside="select.close()")
+	.r-select-value-wrapper(ng-click="select.toggle()") {{ select.value }}
+	.r-select-dropdown(ng-if="select.isOpen")
+		.r-select-options

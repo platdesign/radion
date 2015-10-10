@@ -4,5 +4,8 @@
   "author": "Christian Blaschke <mail@platdesign.de>",
   "version": "0.0.0",
   "dependencies": {},
-  "repository":"https://github.com/platdesign/radion.git"
+  "repository": "https://github.com/platdesign/radion.git",
+  "devDependencies": {
+    "angular": "^1.4.7"
+  }
 }
