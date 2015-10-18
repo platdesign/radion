@@ -10,168 +10,73 @@ var mod = module.exports = angular.module('radion.directive.r-select', [
 ]);
 
 
-
-
-mod.directive('rSelect', ['$compile', '$parse', function($compile, $parse) {
-
+mod.directive('rSelect', ['$parse', function($parse) {
 	return {
 		restrict: 'E',
-		require: ['rSelect', 'ngModel'],
-		//template: require('./templates/select.jade'),
-		//replace: true,
-		// scope: {
-		// 	model: '=ngModel'
-		// },
-		//transclude: true,
-		template: function(el) {
-			var template = '<div>' + require('./templates/select.jade') + '</div>';
-			var newEl = $(template);
+    template: function(el) {
+    	var itemTmpl = el.html();
+    	var template = $('<div>' + require('./template.jade') + '</div>');
 
-			newEl.attr('class', newEl.attr('class') + ' ' + el.attr('class'));
+    	template.find('.r-select-value').append(itemTmpl);
+    	template.find('.r-select-option').html(itemTmpl);
 
-			var customValue = el.find('r-select-value');
+    	template.addClass(el.attr('class'));
 
-			if(customValue.length) {
-				newEl.find('.r-select-value-wrapper').html(customValue);
+    	return template.html();
+		},
+		replace: true,
+		scope: {
+			items:'=rSelectItems',
+			model: '=ngModel',
+			placeholder: '@'
+		},
+		require: 'ngModel',
+		link: function(scope, el, attr, modelCtrl) {
+
+
+			var valueFn = attr.rSelectValuePath ? $parse(attr.rSelectValuePath) : function(item) { return item; }
+
+			modelCtrl.$render = function() {
+				var items = [];
+
+				angular.forEach(scope.items, function(item){
+					items.push(item);
+				});
+
+				 var item = items.filter(function(item){
+					return valueFn(item) === modelCtrl.$viewValue;
+				})[0];
+
+				scope.selectItem(item);
+			};
+
+			scope.selectItem = function(item) {
+				scope.item = item;
+				setModelValue(item);
+			};
+
+			function setModelValue(item) {
+        var value;
+				if(attr.rSelectValuePath) {
+					value = $parse(attr.rSelectValuePath)(item);
+					console.log(value);
+				} else {
+					value = item;
+				}
+
+				modelCtrl.$setViewValue(value);
 			}
 
-			newEl.find('.r-select-options').html(el.find('r-select-option'));
-
-			return newEl.html();
-		},
-		replace: true,
-		scope: true,
-		compile: function(el) {
-
-			return function link(scope, el, attr, ctrls, transclude) {
-
-				var rSelectCtrl = ctrls[0];
-				var modelCtrl = rSelectCtrl.modelCtrl =  ctrls[1];
-
-				rSelectCtrl.items = scope.items;
-
-				scope.select = rSelectCtrl;
-
-				modelCtrl.$render = function() {
-					var value = modelCtrl.$viewValue;
-
-					var items = $parse(attr.rSelectItems)(scope);
-
-					angular.forEach(items, function(item) {
-
-						if($parse(attr.rSelectValue)({ item:item }) === value) {
-							rSelectCtrl.setValue(value, item);
-						}
-
-					});
-				};
-
-				rSelectCtrl.selectItem = function(itemName, _scope) {
-
-					var item = $parse(itemName)(_scope);
-					var value = $parse(attr.rSelectValue)({ item:item });
-
-					this.setValue(value, item, itemName);
-
-				};
-
-			};
-		},
 
 
-		controller: ['$parse', '$scope', function($parse, $scope) {
-			this.isOpen = false;
-
-
-
-			this.close = function() {
-				this.isOpen = false;
+			scope.dropdownVisible = false;
+			scope.toggleDropdown = function() {
+				scope.dropdownVisible = true;
 			};
 
-			this.open = function() {
-				this.isOpen = true;
+			scope.hideDropdown = function() {
+				scope.dropdownVisible = false;
 			};
-
-
-			this.toggle = function() {
-				this.isOpen = !this.isOpen;
-			};
-
-			this.setValue = function(val, item, itemName) {
-				console.log(val)
-				this.modelCtrl.$setViewValue(val || item);
-				this.value = val || item;
-				this.item = item;
-				this.isOpen = false;
-			};
-
-
-
-
-			this.matchItem = function(itemName, scope) {
-
-				var value = $parse(itemName)(scope);
-
-
-			};
-
-		}]
-	}
+		}
+	};
 }]);
-
-
-
-
-mod.directive('rSelectOption', ['$parse', function($parse) {
-	return {
-		restrict: 'E',
-		scope: {},
-		require: '^rSelect',
-		template: require('./templates/select-option.jade'),
-		replace: true,
-		transclude: true,
-		link: function(scope, el, attr, rSelectCtrl, transclude) {
-			scope.selectCtrl = rSelectCtrl;
-
-			var renderScope;
-
-			transclude(function(clone, scope) {
-				el.html(clone);
-				renderScope = scope;
-			});
-
-
-			scope.selectItem = function() {
-				rSelectCtrl.selectItem(attr.rSelect, renderScope);
-			};
-
-			rSelectCtrl.matchItem(attr.rSelect, renderScope);
-
-		},
-
-	}
-}]);
-
-
-
-
-
-
-
-
-mod.directive('rSelectValue', function() {
-	return {
-		restrict: 'E',
-		scope: {
-		},
-		require: '^rSelect',
-		template: require('./templates/select-value.jade'),
-		replace: true,
-		transclude: 'element',
-		link: function(scope, el, attr, rSelectCtrl) {
-			scope.selectCtrl = rSelectCtrl;
-
-		},
-
-	}
-});

@@ -1,0 +1,5 @@
+.r-select(r-click-outside="hideDropdown()")
+	.r-select-value.r-select-item(ng-click="toggleDropdown()")
+		.r-select-placeholder(ng-if="!item") {{ placeholder || 'Select' }}
+	.r-select-options(ng-if="dropdownVisible")
+		.r-select-option.r-select-item(ng-repeat="item in items" ng-click="selectItem(item); hideDropdown();")
