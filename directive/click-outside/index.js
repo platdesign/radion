@@ -14,7 +14,7 @@ mod.directive('rClickOutside', ['$window', '$parse', function ($window, $parse) 
 		link: function (scope, element, attrs) {
 
 			element.on('click', function(event) {
-				event.stopPropagation();
+				//event.stopPropagation();
 			});
 
 			angular.element($window).on('click', function (event) {
