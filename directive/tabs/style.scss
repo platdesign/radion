@@ -1,0 +1,20 @@
+.r-tabs {
+	$color: darken(white, 20%);
+
+	border-bottom: 1px solid $color;
+	display: flex;
+
+	> .r-tab {
+		flex: 0 0 auto;
+		padding: 0 0 10px 0;
+
+		&:not(:last-child) {
+			margin-right: 20px;
+		}
+
+		&.r-tab-active {
+			border-bottom: 17px;
+			border-bottom: 3px solid $color;
+		}
+	}
+}
