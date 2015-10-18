@@ -46,6 +46,15 @@ proto.removeItem = function(item) {
 
 
 /**
+ * Add an item to list instance
+ * @param {Object} item item to add
+ */
+proto.addItem = function(item) {
+	this.items.push(item);
+};
+
+
+/**
  * Remove item by Index
  * @param  {Number} index index of item to remove
  * @return {Object}       self
