@@ -8,7 +8,7 @@ var mod = module.exports = angular.module('radion.directive.click-outside', []);
 console.log('click-outside');
 
 
-mod.directive('rClickOutside', ['$window', '$parse', function ($window, $parse) {
+mod.directive('rClickOutside', ['$window', '$parse', '$timeout', function ($window, $parse, $timeout) {
 	return {
 		restrict: 'A',
 		link: function (scope, element, attrs) {
@@ -17,12 +17,17 @@ mod.directive('rClickOutside', ['$window', '$parse', function ($window, $parse) 
 				//event.stopPropagation();
 			});
 
-			angular.element($window).on('click', function (event) {
+			var t = angular.element($window).on('click', function (event) {
 				var clickOutHandler = $parse(attrs.rClickOutside);
 				if (element[0].contains(event.target)) return;
 				clickOutHandler(scope, {$event: event});
-				scope.$apply();
+
+				$timeout(function() {
+					scope.$apply();
+				});
+
 			});
+
 		}
 	};
 }]);

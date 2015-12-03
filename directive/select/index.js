@@ -44,7 +44,7 @@ mod.directive('rSelect', ['$parse', function($parse) {
 				});
 
 				 var item = items.filter(function(item){
-					return valueFn(item) === modelCtrl.$viewValue;
+				 	return angular.equals(valueFn(item), modelCtrl.$viewValue);
 				})[0];
 
 				scope.selectItem(item);
@@ -59,7 +59,6 @@ mod.directive('rSelect', ['$parse', function($parse) {
         var value;
 				if(attr.rSelectValuePath) {
 					value = $parse(attr.rSelectValuePath)(item);
-					console.log(value);
 				} else {
 					value = item;
 				}
