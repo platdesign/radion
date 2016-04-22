@@ -1,0 +1,48 @@
+/**
+ * Directive: uiDropdownContent
+ */
+.r-d-dropdown-content {
+
+	position: absolute;
+	z-index: 1;
+	top: 100%;
+	margin-top: 15px;
+
+	opacity: 0;
+	margin-top: -10000px;
+	&.isVisible {
+		margin-top: 15px;
+		opacity: 1;
+	}
+
+	> .content {
+		background: white;
+		box-shadow: 0 -2px 30px 0 rgba(black, .2);
+		border-radius: 3px;
+		overflow: hidden;
+	}
+
+	&.left {
+		right:-10px;
+	}
+
+	&.center {
+		transform: translateX(-50%);
+		left: 50%;
+	}
+
+
+	@include brp-before(2) {
+		position: fixed;
+		width: auto;
+		width: 98%;
+		left:1%;
+		right:1%;
+		top: auto;
+		border-radius: 0;
+		box-shadow: 0 -2px 300px 3000px rgba(black, .2);
+	}
+
+
+
+}
