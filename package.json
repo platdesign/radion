@@ -2,7 +2,7 @@
   "name": "radion",
   "description": "Angular app framework",
   "author": "Christian Blaschke <mail@platdesign.de>",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "dependencies": {},
   "repository": "https://github.com/platdesign/radion.git",
   "devDependencies": {
